@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=DynaPuff:wght@400;500;600;700&family=Edu+NSW+ACT+Foundation:wght@400;500;600;700&family=Pacifico&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <title>Todo List</title>
+</head>
+<body>
+    <div id="loading">
+        <div class="loader"></div>
+    </div>
+    <div class="container">
+        <h1 class="my-5 text-center">Todo Tracker</h1>
+        <form id="form">
+            <div class="form-group">
+                <p>Description</p>
+                <input type="text" class="form-control" id="todo-description" placeholder="Describe the issue...">
+            </div>
+            <div class="form-group">
+                <p>Severity</p>
+                <select class="form-control" id="select-severity">
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
+            </div>
+            <div class="text-right">
+                <button class="btn btn-primary" id="add-todo">Add</button>
+            </div>
+        </form>
+        <hr>
+        <div class="todo-control">
+            <div class="todo__heading d-flex justify-content-between">
+                <h2>List Todo</h2>
+                <div>
+                    <input type="text" id="search" class="form-control" placeholder="Search by description">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-2">
+                    <p >Filter: </p>
+                </div>
+                <div class="col-10">
+                    <button class="btn btn-primary">All</button>
+                    <button class="btn btn-success">Open</button>
+                    <button class="btn btn-info">Close</button>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-2">
+                    <p >Oder by: </p>
+                </div>
+                <div class="col-10 col-md-2 col-lg-2">
+                    <select name="" id="" class="form-control">
+                        <option value="ASC">ASC</option>
+                        <option value="DESC">DESC</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-12">
+                <div id="container-todo"></div>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <div class="col-12 ">
+                <nav  >
+                    <ul class="pagination pagination-md d-flex justify-content-center">
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script script src="index.js"></script>
+</body>
+</html>
