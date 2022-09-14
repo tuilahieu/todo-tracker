@@ -6,11 +6,16 @@ const formAddTodo = document.querySelector('#form');
 const loading = document.querySelector('#loading');
 const btnDeleteTodo = document.querySelector('.btn.btn-danger');
 const search = document.querySelector('#search');
+const filterAll = document.querySelector('.filter-all');
+const filterOpen = document.querySelector('.filter-open');
+const filterClose = document.querySelector('.filter-close');
+const todoOrder = document.querySelector('#todo-order');
 
 const endpoint = 'https://tony-json-server.herokuapp.com/api/todos';
 
 // render
 function renderTodo(page = 1, limit = 5) {
+    search.value = '';
     loading.classList.add('loading');
     setTimeout(function() {
         loading.classList.remove('loading');
@@ -26,14 +31,14 @@ function renderTodo(page = 1, limit = 5) {
             document.querySelector('#container-todo').innerHTML = '';
             todoList.forEach((todo) => {
                 const todoTemplate = `
-                <div class="card">
+                <div class="card mb-4">
                         <div class="card-header">
-                            ${todo.id}
+                            <span class="card-id">${todo.id}</span>
                             <span class="todo-status badge badge-secondary">${todo.status}</span>
                         </div>
                         <div class="card-body">
                             <div class="card-title">
-                                <p class="font-weight-bold">${todo.description}</p>
+                                <p class="todo-desc font-weight-bold">${todo.description}</p>
                                 <p class="badge badge-primary">${todo.severity}</p>
                                 <div class="btn-control text-right">
                                     <button onclick="updateStatus(${todo.id})" class="btn btn-primary todo-update">
@@ -44,7 +49,6 @@ function renderTodo(page = 1, limit = 5) {
                             </div>
                         </div>
                     </div>
-                    <br>
                 `;
                 document.querySelector('#container-todo').insertAdjacentHTML('beforeend', todoTemplate);
                 
@@ -55,7 +59,7 @@ function renderTodo(page = 1, limit = 5) {
                 
             })
             handlePagination(page);
-            searchByDesc(page);
+            searchByDesc();
         } else {
             document.querySelector('#container-todo').innerHTML = 'KHÔNG CÓ TODO NÀO.';
         }
@@ -67,10 +71,6 @@ renderTodo();
 // add
 function addTodo(e) {
     e.preventDefault();
-    // if(!todoDesc.value) {
-    //     alert('Chua co dau vao')
-    //     return;
-    // }
     fetch(endpoint, {
         method: 'POST',
         headers: {
@@ -78,7 +78,7 @@ function addTodo(e) {
           },
         body: JSON.stringify({
             "id": new Date().getTime(),
-            "description": todoDesc.value,
+            "description": todoDesc.value.trim() === '' ? '(this todo has no title)' : todoDesc.value,
             "severity": severity.value,
             "status": "open",
             "createdAt": new Date().getTime(),
@@ -95,6 +95,8 @@ function addTodo(e) {
             'success'
         )
     })
+
+    
 };
 
 formAddTodo.addEventListener('submit', addTodo);
@@ -119,18 +121,16 @@ function deleteTodo(id) {
                 },
             })
             .then(res => res.json())
-            .then(data => renderTodo())
-            setTimeout(function() {
+            .then(data => {
+                renderTodo()
                 Swal.fire(
                     'Deleted!',
                     'Your todo has been deleted.',
                     'success'
-                  )
-            }, 700)
+                )
+            })
         }
       })
-    
-    
 }
 
 // UPDATE
@@ -194,7 +194,7 @@ async function handlePagination(page) {
     })
     await document.querySelectorAll('.page-item').forEach(li => {
         li.addEventListener('click', function(e) {
-            renderTodo(li.textContent);
+            renderTodo(li.textContent, 5);
         })
     });
 
@@ -202,23 +202,74 @@ async function handlePagination(page) {
 
 // search
 
- function searchByDesc(page = 1) {
-    
-    fetch(`${endpoint}/?_page=${page}&_limit=5`)
-    .then(res => res.json())
-    .then(data => {
-        let todos = data.data;
-        search.addEventListener('input', function() {
-            todos.forEach(todo => {
-                console.log(todo)
-                if(todo.description.includes(this.value)) {
-                    todo.style.display = 'block';
-                }
-            })
+ function searchByDesc() {
+    search.addEventListener('input', function() {
+        const todoDesc = document.querySelectorAll('.todo-desc');
+        todoDesc.forEach(todo => {
+            todo.parentElement.parentElement.parentElement.style.display = 'none';
+            if(todo.textContent.includes(this.value)) {
+                todo.parentElement.parentElement.parentElement.style.display = 'block';
+            }
         })
-    });
-
+    })
 }
+
+
+// filter
+
+function filterTodo() {
+    
+    filterAll.addEventListener('click', function() {
+        search.value = '';
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => card.style.display = 'block');
+    })
+
+    filterOpen.addEventListener('click', function() {
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => card.style.display = 'block');
+        const cardsStatus = document.querySelectorAll('.todo-status');
+        cardsStatus.forEach(status => {
+            if(status.textContent == 'close') {
+                status.parentElement.parentElement.style.display = 'none';
+            }
+        });
+    })
+    filterClose.addEventListener('click', function() {
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => card.style.display = 'block');
+        const cardsStatus = document.querySelectorAll('.todo-status');
+        cardsStatus.forEach(status => {
+            if(status.textContent == 'open') {
+                status.parentElement.parentElement.style.display = 'none';
+            }
+        });
+    })
+}
+
+filterTodo();
+
+
+// sort
+
+todoOrder.addEventListener('input', function() {
+    if(todoOrder.value === 'ASC') {
+        sortTodo(1);
+    } else {
+        sortTodo(-1);
+    }
+})
+
+function sortTodo(sortBy) {
+    if(sortBy === 1) {
+       //
+    } else if (sortBy === -1) {
+        //
+    }
+}
+
+
+
 
 
 
