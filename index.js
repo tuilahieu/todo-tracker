@@ -61,6 +61,7 @@ renderTodo();
 
 // add
 function addTodo(e) {
+    loading.classList.add('loading');
     e.preventDefault();
     fetch(endpoint, {
         method: 'POST',
@@ -80,6 +81,7 @@ function addTodo(e) {
     .then(data => {
         formAddTodo.reset();
         renderTodo();
+        loading.classList.remove('loading');
         Swal.fire(
             'Success',
             'Your todo has been added.',
