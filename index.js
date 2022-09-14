@@ -123,6 +123,9 @@ function deleteTodo(id) {
                 )
             })
         }
+        else {
+            loading.classList.remove('loading');
+        }
       })
 }
 
