@@ -95,6 +95,7 @@ formAddTodo.addEventListener('submit', addTodo);
 // delete
 
 function deleteTodo(id) {
+    loading.classList.add('loading');
     Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this todo!",
@@ -114,6 +115,7 @@ function deleteTodo(id) {
             .then(res => res.json())
             .then(data => {
                 renderTodo()
+                loading.classList.remove('loading');
                 Swal.fire(
                     'Deleted!',
                     'Your todo has been deleted.',
