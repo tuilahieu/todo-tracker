@@ -14,7 +14,7 @@ const todoOrder = document.querySelector('#todo-order');
 const endpoint = 'https://tony-json-server.herokuapp.com/api/todos';
 
 // render
-function renderTodo(page = 1, limit = 5) {
+async function renderTodo(page = 1, limit = 5) {
     search.value = '';
     loading.classList.add('loading');
     fetch(`${endpoint}/?_page=${page}&_limit=${limit}`)
@@ -45,9 +45,7 @@ function renderTodo(page = 1, limit = 5) {
                     </div>
                 `;
                 document.querySelector('#container-todo').insertAdjacentHTML('beforeend', todoTemplate);
-                   loading.classList.remove('loading');
-
-                
+                loading.classList.remove('loading');
             })
             handlePagination(page);
             searchByDesc();
@@ -61,8 +59,8 @@ renderTodo();
 
 // add
 function addTodo(e) {
-    loading.classList.add('loading');
     e.preventDefault();
+    loading.classList.add('loading');
     fetch(endpoint, {
         method: 'POST',
         headers: {
@@ -129,11 +127,11 @@ function deleteTodo(id) {
 // UPDATE
 
 function updateStatus(id) {
+    loading.classList.add('loading');
     fetch(`${endpoint}/${id}`)
     .then(res => res.json())
     .then(data => {
         if(data.data.status === 'open') {
-            
             fetch(`${endpoint}/${id}`, {
                 method: 'PATCH',
                 headers: {
@@ -146,8 +144,8 @@ function updateStatus(id) {
             })
             .then(res => res.json())
             .then(data => renderTodo())
+            loading.classList.remove('loading');
         } else {
-            
             fetch(`${endpoint}/${id}`, {
                 method: 'PATCH',
                 headers: {
@@ -160,6 +158,7 @@ function updateStatus(id) {
             })
             .then(res => res.json())
             .then(data => renderTodo())
+            loading.classList.remove('loading');
         }
     })
 
@@ -185,10 +184,10 @@ async function handlePagination(page) {
         let pageNow = data.pagination.page - 1;
         document.querySelectorAll('.page-item')[pageNow].classList.add('active');
     })
-    await document.querySelectorAll('.page-item').forEach(li => {
-        li.addEventListener('click', function(e) {
+    document.querySelectorAll('.page-item').forEach(li => {
+        li.addEventListener('click', function (e) {
             renderTodo(li.textContent, 5);
-        })
+        });
     });
 
 }
