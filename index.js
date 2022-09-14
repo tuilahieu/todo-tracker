@@ -17,15 +17,9 @@ const endpoint = 'https://tony-json-server.herokuapp.com/api/todos';
 function renderTodo(page = 1, limit = 5) {
     search.value = '';
     loading.classList.add('loading');
-    setTimeout(function() {
-        loading.classList.remove('loading');
-    }, 500);
-
-
     fetch(`${endpoint}/?_page=${page}&_limit=${limit}`)
     .then(res => res.json())
     .then(data => {
-        
         let todoList = data.data;
         if(todoList.length > 0) {
             document.querySelector('#container-todo').innerHTML = '';
@@ -51,10 +45,7 @@ function renderTodo(page = 1, limit = 5) {
                     </div>
                 `;
                 document.querySelector('#container-todo').insertAdjacentHTML('beforeend', todoTemplate);
-                
-                setTimeout(function() {
-                    loading.classList.remove('loading');
-                }, 500);
+                   loading.classList.remove('loading');
 
                 
             })
