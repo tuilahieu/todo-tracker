@@ -111,3 +111,7 @@
 #loading.loading {
     display: flex;
 }
+
+.pagination li {
+  cursor: pointer;
+}
